@@ -5,6 +5,7 @@ def get_clave(clave)
 	mongoip = Socket.ip_address_list[1].inspect_sockaddr + ':27017'
 	client = Mongo::Client.new([ mongoip ], :database => 'claveprod')
 	client[:claves].find({:clave => clave}).each {|doc| result = doc}
+	return {:clave => clave, :descripcion => ''}.to_json if result == ''
 	return {:clave => result[:clave], :descripcion => result[:descripcion]}.to_json
 	client.close
 end
