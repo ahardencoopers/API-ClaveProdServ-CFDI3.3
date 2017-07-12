@@ -11,7 +11,7 @@ También se puede consultar directamente una clave utilizando su el número que 
 <code>{"clave":"01010101","descripcion":"No existe en el catálogo"}</code>
 
 <h4>Buscar por clave y/o descripción</h4>
-<code>http://localhost:4567/buscarclave=43231&descripcion=empresa</code>
+<code>http://localhost:4567/buscar?clave=43231&descripcion=empresa</code>
 
 <h4>Respuesta del servidor</h4>
 <code>
