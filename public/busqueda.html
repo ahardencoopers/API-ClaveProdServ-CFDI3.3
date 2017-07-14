@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<link rel="stylesheet" href="simple-grid.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h3>Buscador para claves de ClaveProdServ CFDI3.3</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-2">
+				Clave:
+			</div>
+			<div class="col-6">
+				<input type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-2">
+				Descripcion:
+			</div>
+			<div class="col-6">
+				<input type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6"> <button onclick="buscar()">Buscar</button> </div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<h3>Resultados</h3>
+				<hr>
+			</div>
+			<div id="resultados" class="col-12">
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+<script id="template_resultados" type="x-tmpl-mustache">
+	{{#claves}}
+		<div style="border: 1px solid grey; margin-bottom:12px;">
+		<div class="row">
+			<div class="col-2">
+				<b>Clave:</b>
+			</div>
+			<div class="col-9">
+				{{clave}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-2">
+				<b>Descripcion:</b>
+			</div>
+			<div class="col-10">
+			{{descripcion}}
+			</div>
+		</div>
+		</div>
+	{{/claves}}
+</script>
+
+<script>
+function buscar() {
+	var inputs = document.querySelectorAll('input');
+	var xhr = new XMLHttpRequest();
+	var url = '/buscar?clave='+inputs[0].value+'&descripcion='+inputs[1].value;
+	xhr.addEventListener('load', () => {
+		var claves = JSON.parse(xhr.responseText);
+		var template = document.querySelectorAll('#template_resultados')[0].innerHTML;
+		var rendered = Mustache.render(template, claves);
+		document.getElementById('resultados').innerHTML = rendered;
+	});
+	xhr.open('GET', url);
+	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xhr.send();
+}
+</script>
