@@ -71,20 +71,20 @@
 <script>
 
 var claves = {};
-var i = 100;
-var j = 200;
+var i = 3;
+var j = 6;
 var lim = 1000;
 
 window.onscroll = (ev) => {
 	if(claves.claves.length < lim) {return;}
 	if((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
 		var subclaves = {claves: claves.claves.slice(i, j)};
-		i = i + 100;
-		j = j + 100;
+		i = i + 3;
+		j = j + 3;
 		if(subclaves.claves.length === 0) {return;}
 		var template = document.querySelectorAll('#template_resultados')[0].innerHTML;
 		var rendered = Mustache.render(template, subclaves);
-		document.getElementById('resultados').innerHTML = rendered;
+		document.getElementById('resultados').innerHTML += rendered;
 		console.log(claves);
 		console.log(subclaves);
 		console.log(i + ' ' + j);
@@ -93,8 +93,8 @@ window.onscroll = (ev) => {
 };
 
 function buscar() {
-	i = 100;
-	j = 200;
+	i = 3;
+	j = 6;
 	var inputs = document.querySelectorAll('input');
 	var xhr = new XMLHttpRequest();
 	var url = '/buscar?clave='+inputs[0].value+'&descripcion='+inputs[1].value;
