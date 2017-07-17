@@ -11,7 +11,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
-				<h3>Buscador para claves de ClaveProdServ CFDI3.3</h3>
+				<h3>Buscador de claves para ClaveProdServ CFDI3.3</h3>
 			</div>
 		</div>
 		<div class="row">
@@ -69,18 +69,58 @@
 </script>
 
 <script>
+
+var claves = {};
+var i = 100;
+var j = 200;
+var lim = 1000;
+
+window.onscroll = (ev) => {
+	if(claves.claves.length < lim) {return;}
+	if((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+		var subclaves = {claves: claves.claves.slice(i, j)};
+		i = i + 100;
+		j = j + 100;
+		if(subclaves.claves.length === 0) {return;}
+		var template = document.querySelectorAll('#template_resultados')[0].innerHTML;
+		var rendered = Mustache.render(template, subclaves);
+		document.getElementById('resultados').innerHTML = rendered;
+		console.log(claves);
+		console.log(subclaves);
+		console.log(i + ' ' + j);
+		return;
+	}
+};
+
 function buscar() {
+	i = 100;
+	j = 200;
 	var inputs = document.querySelectorAll('input');
 	var xhr = new XMLHttpRequest();
 	var url = '/buscar?clave='+inputs[0].value+'&descripcion='+inputs[1].value;
 	xhr.addEventListener('load', () => {
-		var claves = JSON.parse(xhr.responseText);
-		var template = document.querySelectorAll('#template_resultados')[0].innerHTML;
-		var rendered = Mustache.render(template, claves);
-		document.getElementById('resultados').innerHTML = rendered;
+		claves = JSON.parse(xhr.responseText);
+		if(claves.claves.length < lim) {
+			var template = document.querySelectorAll('#template_resultados')[0].innerHTML;
+			var rendered = Mustache.render(template, claves);
+			document.getElementById('resultados').innerHTML = rendered;
+			return;
+		}
+		if(claves.claves.length >= lim) {
+			var subclaves = {claves: claves.claves.slice(0, i)};
+			var template = document.querySelectorAll('#template_resultados')[0].innerHTML;
+			var rendered = Mustache.render(template, subclaves);
+			document.getElementById('resultados').innerHTML = rendered;
+			return;
+			console.log(subclaves);
+		}
+		console.log(claves);
 	});
 	xhr.open('GET', url);
 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	xhr.send();
 }
+
+
+
 </script>
