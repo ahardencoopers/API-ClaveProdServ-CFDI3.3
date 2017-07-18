@@ -6,6 +6,6 @@ client = Mongo::Client.new([ mongoip ], :database => 'claveprod')
 csv = File.open('claveProdServ.csv')
 csv.each_line do |line|
 	clave = line.split(',')
-	client[:claves].insert_one({:clave => clave[0], :descripcion => clave[1]})
+	client[:claves].insert_one({:clave => clave[0], :descripcion => clave[1].downcase})
 end
 client.close
