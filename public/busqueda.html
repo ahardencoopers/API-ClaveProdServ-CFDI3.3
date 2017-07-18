@@ -71,8 +71,8 @@
 <script>
 
 var claves = {};
-var i = 3;
-var j = 6;
+var i = 10;
+var j = 13;
 var lim = 1000;
 
 window.onscroll = (ev) => {
@@ -93,8 +93,8 @@ window.onscroll = (ev) => {
 };
 
 function buscar() {
-	i = 3;
-	j = 6;
+	i = 10;
+	j = 13;
 	var inputs = document.querySelectorAll('input');
 	var xhr = new XMLHttpRequest();
 	var url = '/buscar?clave='+inputs[0].value+'&descripcion='+inputs[1].value;
