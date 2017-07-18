@@ -11,10 +11,11 @@ def get_clave(clave)
 end
 
 def buscar(clave, descripcion)
+	descripcion = descripcion.split(' ').join('.*')
 	result = []
 	mongoip = Socket.ip_address_list[1].inspect_sockaddr + ':27017'
 	client = Mongo::Client.new([ mongoip ], :database => 'claveprod')
-	client[:claves].find({:clave => /.*#{Regexp.escape(clave)}.*/, :descripcion => /.*#{Regexp.escape(descripcion)}.*/}).each {|doc| result.push({:clave => doc[:clave], :descripcion => doc[:descripcion]})}
+	client[:claves].find({:clave => /.*#{Regexp.escape(clave)}.*/, :descripcion => /.*#{descripcion}.*/}).each {|doc| result.push({:clave => doc[:clave], :descripcion => doc[:descripcion]})}
 	return {:claves => result}.to_json
 	client.close
 end
